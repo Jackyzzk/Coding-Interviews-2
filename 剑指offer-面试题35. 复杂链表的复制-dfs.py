@@ -29,30 +29,19 @@ Node.random 为空（null）或指向链表中的节点。节点数目不超过
         :type head: Node
         :rtype: Node
         """
-        rec, p = [], head
-        seq, count = {None: None}, 0
-        while p:
-            seq[p] = count
-            count += 1
-            p = p.next
-        p = head
-        while p:
-            rec.append([p.val, seq[p.random]])
-            p = p.next
+        def dfs(node):
+            if not node:
+                return None
+            if node in rec:
+                return rec[node]
+            new = Node(node.val)
+            rec[node] = new
+            new.next = dfs(node.next)
+            new.random = dfs(node.random)
+            return new
 
-        def create(nums):
-            aux = p = Node(0)
-            rec = []
-            for x in nums:
-                p.next = Node(x[0])
-                p = p.next
-                rec.append(p)
-            for i, x in enumerate(nums):
-                if x[1] is not None:
-                    rec[i].random = rec[x[1]]
-            return aux.next
-
-        return create(rec)
+        rec = {}
+        return dfs(head)
 
 
 def create(nums):

@@ -14,6 +14,18 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[int]
         """
+        partition = 0
+        for x in nums:
+            partition ^= x
+        # partition &= -partition
+        partition &= ~partition + 1  # 取到最后的 1 连同它的位
+        a, b = 0, 0
+        for x in nums:
+            if x & partition:
+                a ^= x
+            else:
+                b ^= x
+        return [a, b]
 
 
 def main():

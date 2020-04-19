@@ -34,28 +34,20 @@ https://leetcode-cn.com/problems/convert-binary-search-tree-to-sorted-doubly-lin
         :type root: Node
         :rtype: Node
         """
-        def traversal(node):
-            que, p = [], node
-            while que or p:
-                while p:
-                    que.append(p)
-                    p = p.left
-                p = que.pop()
-                rec.append(p)
-                p = p.right
-
         if not root:
             return None
-        rec = []
-        traversal(root)
-        n = len(rec)
-        for i in range(n):
-            rec[i].left = rec[i - 1]
-            if i + 1 == n:
-                rec[i].right = rec[0]
-            else:
-                rec[i].right = rec[i + 1]
-        return rec[0]
+        aux = Node(0)
+        que, p, pre = [], root, aux
+        while que or p:
+            while p:
+                que.append(p)
+                p = p.left
+            p = que.pop()
+            pre.right, p.left, pre = p, pre, p
+            p = p.right
+        pre.right = aux.right
+        aux.right.left = pre
+        return aux.right
 
 
 def create(nums):
@@ -78,6 +70,7 @@ def create(nums):
 
 def main():
     nums = [4, 2, 5, 1, 3]
+    nums = []
     test = Solution()
     ret = test.treeToDoublyList(create(nums))
     print(ret)
