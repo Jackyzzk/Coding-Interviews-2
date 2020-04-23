@@ -1,3 +1,6 @@
+import re
+
+
 class Solution(object):
     """
 请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。
@@ -10,10 +13,26 @@ class Solution(object):
         :type s: str
         :rtype: bool
         """
+        s = s.strip()
+        match = re.match(r'^[+-]?(\d*)\.?(\d*)([Ee][+-]?\d+)?$', s)
+        if match:
+            if match.group(1) or match.group(2):
+                return True
+        return False
 
 
 def main():
-    s =
+    s = '-1E-16'
+    # s = '+100'
+    # s = '3.1416'
+    # s = "12e+5.4"
+    # s = "1a3.14"
+    # s = '0'
+    # s = '1 '
+    # s = '.1'  # True
+    # s = '.'
+    # s = "3."  # True
+    # s = "6+1"  # False
     test = Solution()
     ret = test.isNumber(s)
     print(ret)
